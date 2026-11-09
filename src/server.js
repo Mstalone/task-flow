@@ -1,3 +1,4 @@
+
 const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -5,7 +6,7 @@ const path = require("node:path");
 // Pasta onde estão os ficheiros da interface web
 const pastaPublica = path.join(__dirname, "..", "public");
 
-// Ficheiros que podem ser disponibilizados pelo servidor
+// Ficheiros permitidos para acesso através do servidor
 const arquivosPermitidos = {
   "/": {
     arquivo: "index.html",
@@ -24,7 +25,7 @@ const arquivosPermitidos = {
 // Criar o servidor HTTP
 const servidor = http.createServer((req, res) => {
 
-  // Impedir a interpretação incorreta de tipos de ficheiros
+  // Impedir a interpretação incorreta dos tipos de ficheiros
   res.setHeader("X-Content-Type-Options", "nosniff");
 
   // Proteger a aplicação contra ataques de clickjacking
@@ -49,13 +50,26 @@ const servidor = http.createServer((req, res) => {
     "camera=(), microphone=(), geolocation=()"
   );
 
-  // Evitar o armazenamento de respostas em cache HTTP
+  // Impedir o armazenamento de respostas na cache HTTP
   res.setHeader("Cache-Control", "no-store");
 
-  // Restringir a incorporação de recursos entre origens
-  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  // Restringir o carregamento de recursos entre origens
+  res.setHeader(
+    "Cross-Origin-Embedder-Policy",
+    "require-corp"
+  );
+
   // Isolar a aplicação de janelas de outras origens
-  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader(
+    "Cross-Origin-Opener-Policy",
+    "same-origin"
+  );
+
+  // Impedir que outras origens incorporem os recursos da aplicação
+  res.setHeader(
+    "Cross-Origin-Resource-Policy",
+    "same-origin"
+  );
 
   // Endpoint para verificar o estado do servidor
   if (req.method === "GET" && req.url === "/health") {
@@ -99,13 +113,13 @@ const servidor = http.createServer((req, res) => {
     return;
   }
 
-  // Obter o caminho do ficheiro solicitado
+  // Construir o caminho do ficheiro solicitado
   const caminhoFicheiro = path.join(
     pastaPublica,
     recurso.arquivo
   );
 
-  // Ler e disponibilizar o ficheiro
+  // Ler e disponibilizar o ficheiro solicitado
   fs.readFile(caminhoFicheiro, (erro, conteudo) => {
 
     if (erro) {
@@ -140,5 +154,5 @@ if (require.main === module) {
   });
 }
 
-// Exportar o servidor para permitir testes automatizados
+// Exportar o servidor para os testes automatizados
 module.exports = { servidor };
