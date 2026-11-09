@@ -82,7 +82,7 @@ const servidor = http.createServer((req, res) => {
 const porta = process.env.PORT || 3000;
 
 if (require.main === module) {
-  servidor.listen(porta, "127.0.0.1", () => {
+  servidor.listen(porta, "0.0.0.0", () => {
     console.log(
       `TaskFlow disponível em http://127.0.0.1:${porta}`
     );
