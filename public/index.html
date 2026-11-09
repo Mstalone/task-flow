@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow — Gestor de Tarefas</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header class="cabecalho">
+      <h1>✓ TaskFlow</h1>
+      <p>Organiza as tuas tarefas de forma simples.</p>
+    </header>
+
+    <section class="painel" aria-labelledby="titulo-painel">
+      <h2 id="titulo-painel">As minhas tarefas</h2>
+
+      <form id="form-tarefa">
+        <div class="campo campo-titulo">
+          <label for="titulo-tarefa">Título da tarefa</label>
+          <input id="titulo-tarefa" type="text" maxlength="120"
+                 placeholder="Ex.: Preparar apresentação" required>
+        </div>
+
+        <div class="campo">
+          <label for="prioridade-tarefa">Prioridade</label>
+          <select id="prioridade-tarefa">
+            <option value="baixa">Baixa</option>
+            <option value="media" selected>Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="prazo-tarefa">Prazo</label>
+          <input id="prazo-tarefa" type="date">
+        </div>
+
+        <button class="botao-principal" type="submit">
+          + Adicionar tarefa
+        </button>
+      </form>
+
+      <div class="resumo" aria-label="Resumo das tarefas">
+        <span>Total: <strong id="total">0</strong></span>
+        <span>Pendentes: <strong id="pendentes">0</strong></span>
+        <span>Em progresso: <strong id="em-progresso">0</strong></span>
+        <span>Concluídas: <strong id="concluidas">0</strong></span>
+      </div>
+
+      <div class="filtros">
+        <div class="campo campo-pesquisa">
+          <label for="pesquisa-tarefas">Pesquisar</label>
+          <input id="pesquisa-tarefas" type="search"
+                 placeholder="Pesquisar pelo título...">
+        </div>
+
+        <div class="campo">
+          <label for="filtro-estado">Filtrar por estado</label>
+          <select id="filtro-estado">
+            <option value="todos">Todos</option>
+            <option value="pendente">Pendente</option>
+            <option value="em_progresso">Em progresso</option>
+            <option value="concluida">Concluída</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="filtro-prioridade">Filtrar por prioridade</label>
+          <select id="filtro-prioridade">
+            <option value="todas">Todas</option>
+            <option value="alta">Alta</option>
+            <option value="media">Média</option>
+            <option value="baixa">Baixa</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="mensagem-feedback" role="status" aria-live="polite"></p>
+      <ul id="lista-tarefas"></ul>
+      <p id="mensagem-vazia">
+        Ainda não existem tarefas. Adiciona a primeira!
+      </p>
+    </section>
+  </main>
+
+  <dialog id="dialogo-editar" aria-labelledby="titulo-editar">
+    <form id="form-editar">
+      <h2 id="titulo-editar">Editar tarefa</h2>
+
+      <div class="campo">
+        <label for="editar-titulo">Título</label>
+        <input id="editar-titulo" type="text" maxlength="120" required>
+      </div>
+
+      <div class="campo">
+        <label for="editar-prioridade">Prioridade</label>
+        <select id="editar-prioridade">
+          <option value="baixa">Baixa</option>
+          <option value="media">Média</option>
+          <option value="alta">Alta</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="editar-prazo">Prazo</label>
+        <input id="editar-prazo" type="date">
+      </div>
+
+      <div class="acoes-dialogo">
+        <button type="button" id="cancelar-edicao"
+                class="botao-secundario">
+          Cancelar
+        </button>
+        <button type="submit" class="botao-principal">
+          Guardar alterações
+        </button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
