@@ -52,23 +52,29 @@ jobs:
           cat /tmp/taskflow.log
           exit 1
 
+      # Preparar a pasta para guardar os relatorios
+      - name: Preparar pasta de relatorios
+        run: |
+          mkdir -p zap-reports
+          chmod 777 zap-reports
+
       # Executar a analise dinamica com OWASP ZAP
       - name: Executar OWASP ZAP Baseline
         run: |
           docker run --rm \
             --network host \
-            -v "${{ github.workspace }}:/zap/wrk/:rw" \
-            -t ghcr.io/zaproxy/zaproxy:stable \
+            -v "${{ github.workspace }}/zap-reports:/zap/wrk/:rw" \
+            ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t http://127.0.0.1:3000 \
             -r zap_report.html \
             -I
 
-      # Guardar o relatorio da analise
+      # Guardar o relatorio HTML da analise DAST
       - name: Guardar relatorio DAST
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-dast-zap
-          path: zap_report.html
-          if-no-files-found: warn
+          path: zap-reports/zap_report.html
+          if-no-files-found: error
