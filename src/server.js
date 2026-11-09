@@ -54,6 +54,8 @@ const servidor = http.createServer((req, res) => {
 
   // Restringir a incorporação de recursos entre origens
   res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  // Isolar a aplicação de janelas de outras origens
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
 
   // Endpoint para verificar o estado do servidor
   if (req.method === "GET" && req.url === "/health") {
