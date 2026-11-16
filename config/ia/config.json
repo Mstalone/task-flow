@@ -1,0 +1,17 @@
+
+{
+  "versao_configuracao": "1.0.0",
+  "ferramenta": "Ollama",
+  "modelo": "qwen2.5-coder:1.5b",
+  "objetivo": "Apoiar a revisao de codigo e a analise de testes",
+  "parametros": {
+    "temperatura": 0,
+    "num_predict": 200,
+    "repeat_penalty": 1.2,
+    "limite_alertas": 5
+  },
+  "reprodutibilidade": {
+    "registar_versao": true,
+    "guardar_resultados": true
+  }
+}
