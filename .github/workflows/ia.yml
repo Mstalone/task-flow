@@ -1,0 +1,41 @@
+name: Analise de Codigo com IA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analise-ia:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+
+      - name: Iniciar Ollama
+        run: |
+          ollama serve > /tmp/ollama.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:11434/api/tags > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/ollama.log
+          exit 1
+
+      - name: Descarregar modelo
+        run: ollama pull qwen2.5-coder:1.5b
+
+      - name: Executar analise com IA
+        run: node scripts/analisar-ia.js
